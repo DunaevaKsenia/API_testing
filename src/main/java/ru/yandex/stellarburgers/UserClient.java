@@ -2,16 +2,12 @@ package ru.yandex.stellarburgers;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
-
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 
 public class UserClient extends BaseSpec {
-
-
-
     @Step("Create new user with Name:{user.name}  Email:{user.email}  Password:{user.password} ")
     public ValidatableResponse createUser(User user) {
         return given()
@@ -61,6 +57,27 @@ public class UserClient extends BaseSpec {
                 .body(userData)
                 .when()
                 .post(USER_LOGIN)
+                .then();
+    }
+
+    @Step("Changing user data for accessToken:{accessToken}   set Name:{user.name}  Email:{user.email}  Password:{user.password}")
+    public ValidatableResponse changeUserData(String accessToken, User user) {
+        return given()
+                .spec(getBaseSpec())
+                .auth().oauth2(accessToken)
+                .and()
+                .body(user)
+                .when()
+                .patch(INFO_USER)
+                .then();
+    }
+    @Step("Changing user data set Name:{user.name}  Email:{user.email}  Password:{user.password}")
+    public ValidatableResponse changeUserData(User user) {
+        return given()
+                .spec(getBaseSpec())
+                .body(user)
+                .when()
+                .patch(INFO_USER)
                 .then();
     }
 }

@@ -11,13 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.yandex.stellarburgers.User;
 import ru.yandex.stellarburgers.UserClient;
-import ru.yandex.stellarburgers.responses.UserRegistrationResponse;
-
+import ru.yandex.stellarburgers.responses.UserRegistrationResp;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -28,7 +26,7 @@ public class UserLoginPositiveTest {
     private User user;
     private UserClient userClient;
     private String accessToken;
-
+    private int statusCode;
 
     @Before
     public void setUp() {
@@ -48,10 +46,10 @@ public class UserLoginPositiveTest {
     @Description("Create new random user, registered it and then try to login with name, email, password")
     public void userCanLoginWithValidRandomFullCredentials() {
         ValidatableResponse response = userClient.createUser(user);
-        accessToken = response.extract().as(UserRegistrationResponse.class).getAccessToken();
+        accessToken = response.extract().as(UserRegistrationResp.class).getAccessToken();
 
         ValidatableResponse responseLogin = userClient.loginUser(user);
-        int statusCode = responseLogin.extract().statusCode();
+        statusCode = responseLogin.extract().statusCode();
 
         assertThat("Valid user cannot login", statusCode, equalTo(SC_OK));
         responseLogin.assertThat().body("success", equalTo(true));
@@ -66,15 +64,12 @@ public class UserLoginPositiveTest {
         userData.put("password", user.getPassword());
 
         ValidatableResponse response = userClient.createUser(user);
-        accessToken = response.extract().as(UserRegistrationResponse.class).getAccessToken();
+        accessToken = response.extract().as(UserRegistrationResp.class).getAccessToken();
 
         ValidatableResponse responseLogin = userClient.loginUser(userData);
-        int statusCode = responseLogin.extract().statusCode();
+        statusCode = responseLogin.extract().statusCode();
 
         assertThat("Valid user cannot login with email and password", statusCode, equalTo(SC_OK));
         responseLogin.assertThat().body("success", equalTo(true));
     }
-
-
-
 }

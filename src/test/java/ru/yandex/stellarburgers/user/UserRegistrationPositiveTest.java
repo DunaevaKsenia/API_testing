@@ -20,7 +20,7 @@ public class UserRegistrationPositiveTest {
     private User user;
     private UserClient userClient;
     private String accessToken;
-
+    private int statusCode;
 
     @Before
     public void setUp() {
@@ -36,12 +36,12 @@ public class UserRegistrationPositiveTest {
     }
 
     @Test
-    @DisplayName("Create new user")
-    @Description("Create new user and then registration with valid random credentials")
+    @DisplayName("Create new valid user")
+    @Description("Create new user with valid random credentials and then registration it")
     public void userCanBeRegisteredWithValidRandomCredentials() {
         ValidatableResponse response = userClient.createUser(user);
-        int statusCode = response.extract().statusCode();
-        accessToken = response.extract().as(UserRegistrationResponse.class).getAccessToken();
+        statusCode = response.extract().statusCode();
+        accessToken = response.extract().as(UserRegistrationResp.class).getAccessToken();
 
         assertThat("Valid user cannot be registered", statusCode, equalTo(SC_OK));
         response.assertThat().body("success", equalTo(true));
