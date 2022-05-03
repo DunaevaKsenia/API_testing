@@ -5,4 +5,7 @@ public class EndPoints {
     public static final String CREATE_USER = "/auth/register";
     public static final String INFO_USER = "/auth/user";
     public static final String USER_LOGIN = "/auth/login";
+    public static final String INGREDIENTS = "/ingredients";
+    public static final String ORDERS = "/orders";
+
 }
