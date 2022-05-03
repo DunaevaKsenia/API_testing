@@ -3,7 +3,6 @@ package ru.yandex.stellarburgers;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
-import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -38,6 +37,25 @@ public class OrderClient extends BaseSpec {
                 .body(ingredients)
                 .when()
                 .post(ORDERS)
+                .then();
+    }
+
+    @Step("Get list of user orders with Name:{user.name}  AccessToken:{accessToken}")
+    public ValidatableResponse getUserOrder(User user, String accessToken) {
+        return given()
+                .spec(getBaseSpec())
+                .auth().oauth2(accessToken)
+                .when()
+                .get(ORDERS)
+                .then();
+    }
+
+    @Step("Get list of user orders without Authorization")
+    public ValidatableResponse getUserOrder() {
+        return given()
+                .spec(getBaseSpec())
+                .when()
+                .get(ORDERS)
                 .then();
     }
 }
