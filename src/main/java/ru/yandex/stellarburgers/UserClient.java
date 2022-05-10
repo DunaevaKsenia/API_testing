@@ -71,6 +71,7 @@ public class UserClient extends BaseSpec {
                 .patch(INFO_USER)
                 .then();
     }
+
     @Step("Changing user data set Name:{user.name}  Email:{user.email}  Password:{user.password}")
     public ValidatableResponse changeUserData(User user) {
         return given()
