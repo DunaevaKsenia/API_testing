@@ -1,4 +1,4 @@
-﻿# API_testing 
+﻿# API тестирование 
 
 Учебный проект по тестированию API сервиса заказа бургера.
 В данном проекте используется JUnit 4, Maven, RestAssured, lombok, javafaker, gson.
